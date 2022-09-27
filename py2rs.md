@@ -14,8 +14,8 @@ In Python we use the same types for raw and pico svg. In Rust they should be dif
 Parse an incoming svg file into a "raw" svg, call a function to get a "pico" svg of it. Something akin to:
 
 ```rust
-let svg:Svg = Svg::parse(raw_xml);
-let pico:Picosvg = Picosvg::from(svg);
+let svg: Svg = Svg::parse(raw_xml);
+let pico: Picosvg = Picosvg::from(svg);
 ```
 
 We want fast parsing, so we will rely on https://docs.rs/quick-xml/latest/quick_xml/.
@@ -24,12 +24,15 @@ We want typed fields, therefore we will not use https://crates.io/crates/svg, in
 declare our own structs. We regretted not going further with types in the Python version, lets not
 make that mistake again.
 
+We want to avoid duplication with `kurbo`, and we need the ability to write, so we will not use
+https://docs.rs/svgtypes/latest/svgtypes/.
+
 In Python the picosvg svg types are useful for general svg manipulation. That seems likely to recur.
 
 Consider structuring things so you can use our svg types w/o picosv. Per discussion with @dfrg perhaps:
 
-1. `kurbo` crate provides our basic graphics contructs
-1. `vg-types` (new, pulled out of piet) provides core vector graphic constructs
+1. `kurbo` crate provides our basic graphics contructs including svg path parsing
+1. `vg-types` (new) provides core vector graphic constructs
    * depends on `kurbo`
 1. `simple-svg` (new) provides basic svg parsing, roughly the equivalent of [svg_types.py](https://github.com/googlefonts/picosvg/blob/main/src/picosvg/svg_types.py) in picosvg
    * depnds on `kurbo`, `vg-types`
