@@ -24,9 +24,11 @@ We want typed fields, therefore we will not use https://crates.io/crates/svg, in
 declare our own structs. We regretted not going further with types in the Python version, lets not
 make that mistake again.
 
-In Python the picosvg svg types are useful for general svg manipulation. We might wish to (per discussion with @dfrg) structure things as follows:
+In Python the picosvg svg types are useful for general svg manipulation. That seems likely to recur.
 
-1. `kurbo` provides our basic graphics contructs
+Consider structuring things so you can use our svg types w/o picosv. Per discussion with @dfrg perhaps:
+
+1. `kurbo` crate provides our basic graphics contructs
 1. `vg-types` (new, pulled out of piet) provides core vector graphic constructs
    * depends on `kurbo`
 1. `simple-svg` (new) provides basic svg parsing, roughly the equivalent of [svg_types.py](https://github.com/googlefonts/picosvg/blob/main/src/picosvg/svg_types.py) in picosvg
