@@ -543,5 +543,5 @@ pub mod id {
 }
 
 value_desc!(Color);
-value_desc!(Length);
 value_desc!(String);
+value_desc!(Length);

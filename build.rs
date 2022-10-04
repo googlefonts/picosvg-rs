@@ -3,7 +3,7 @@ use std::fmt::Write;
 use std::fs;
 use std::path::Path;
 
-// (name, attribute-name, value-type)
+// (name, svg-id, value-type)
 const ATTRIBUTES: &[(&str, &str, &str)] = &[
     ("AccentHeight", "accent-height", "String"),
     ("Accumulate", "accumulate", "String"),
@@ -310,20 +310,16 @@ fn main() -> Result<(), std::fmt::Error> {
         buf,
         "const ATTRIBUTE_VALIDATORS: &[(&str, fn(&Value) -> bool)] = &["
     )?;
-    for (name, attr_name, ty) in &attrs {
-        writeln!(buf, "    ({:?}, id::{}::validate),", attr_name, name)?;
+    for (name, id, ty) in &attrs {
+        writeln!(buf, "    ({:?}, id::{}::validate),", id, name)?;
         value_tys.insert(ty);
     }
     writeln!(buf, "];\n")?;
 
     writeln!(buf, "pub mod id {{")?;
     writeln!(buf, "    use super::AttributeDescriptor;")?;
-    for (name, attr_name, ty) in &attrs {
-        writeln!(
-            buf,
-            "    attr_desc!({}, {:?}, super::{});",
-            name, attr_name, ty
-        )?;
+    for (name, id, ty) in &attrs {
+        writeln!(buf, "    attr_desc!({}, {:?}, super::{});", name, id, ty)?;
     }
     writeln!(buf, "}}\n")?;
 

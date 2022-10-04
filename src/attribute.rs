@@ -23,11 +23,11 @@ macro_rules! value_desc {
 }
 
 pub trait AttributeDescriptor {
-    const NAME: &'static str;
+    const ID: &'static str;
     type Value: ValueDescriptor;
 
-    fn name(&self) -> &'static str {
-        Self::NAME
+    fn id(&self) -> &'static str {
+        Self::ID
     }
 
     fn validate(value: &Value) -> bool {
@@ -40,7 +40,7 @@ macro_rules! attr_desc {
         #[derive(Copy, Clone, Debug)]
         pub struct $name;
         impl AttributeDescriptor for $name {
-            const NAME: &'static str = $key;
+            const ID: &'static str = $key;
             type Value = $ty;
         }
     };
@@ -92,34 +92,34 @@ impl AttributeSet {
     }
 
     pub fn insert<A: AttributeDescriptor>(&mut self, attr: A, value: A::Value) -> Option<Value> {
-        self.items.insert(attr.name(), value.into_value())
+        self.items.insert(attr.id(), value.into_value())
     }
 
     pub fn get<A: AttributeDescriptor>(&self, attr: A) -> Option<&A::Value> {
         self.items
-            .get(attr.name())
+            .get(attr.id())
             .map(|value| A::Value::try_deref_value(value))
             .flatten()
     }
 
-    pub fn insert_by_name(
+    pub fn insert_by_id(
         &mut self,
-        name: &str,
+        id: &str,
         value: Value,
     ) -> std::result::Result<Option<Value>, InsertError> {
-        let (name, validator) =
-            match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(&name)) {
-                Ok(idx) => ATTRIBUTE_VALIDATORS[idx],
-                _ => return Err(InsertError::InvalidAttribute),
-            };
+        let (id, validator) = match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(&id))
+        {
+            Ok(idx) => ATTRIBUTE_VALIDATORS[idx],
+            _ => return Err(InsertError::InvalidAttribute),
+        };
         if !validator(&value) {
             return Err(InsertError::InvalidValue);
         }
-        Ok(self.items.insert(name, value))
+        Ok(self.items.insert(id, value))
     }
 
-    pub fn get_by_name(&self, name: &str) -> Option<&Value> {
-        self.items.get(name)
+    pub fn get_by_id(&self, id: &str) -> Option<&Value> {
+        self.items.get(id)
     }
 
     pub fn iter(&self) -> impl Iterator<Item = (&'static str, &Value)> + Clone {

@@ -26,7 +26,7 @@ fn main() {
     // prints Err(InvalidValue)
     println!(
         "{:?}",
-        set.insert_by_name(
+        set.insert_by_id(
             "d",
             Value::Length(Length {
                 value: 100.,
@@ -35,17 +35,17 @@ fn main() {
         )
     );
 
-    println!("{:?}", set.get_by_name("width"));
+    println!("{:?}", set.get_by_id("width"));
     println!("{:?}", set.get(id::StopColor));
-    println!("{:?}", set.get_by_name("stop-color"));
+    println!("{:?}", set.get_by_id("stop-color"));
 
     println!(
         "{:?}",
-        set.insert_by_name("width", Value::String("hello".into()))
+        set.insert_by_id("width", Value::String("hello".into()))
     );
     println!(
         "{:?}",
-        set.insert_by_name("lobster", Value::String("hello".into()))
+        set.insert_by_id("lobster", Value::String("hello".into()))
     );
 
     for (name, value) in set.iter() {
