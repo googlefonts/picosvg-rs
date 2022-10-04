@@ -82,11 +82,11 @@ pub enum Value {
 }
 
 #[derive(Default, Debug)]
-pub struct AttributeSet {
+pub struct AttributeMap {
     items: HashMap<&'static str, Value>,
 }
 
-impl AttributeSet {
+impl AttributeMap {
     pub fn new() -> Self {
         Self::default()
     }
@@ -102,11 +102,7 @@ impl AttributeSet {
             .flatten()
     }
 
-    pub fn insert_by_id(
-        &mut self,
-        id: &str,
-        value: Value,
-    ) -> std::result::Result<Option<Value>, InsertError> {
+    pub fn insert_by_id(&mut self, id: &str, value: Value) -> Result<Option<Value>, InsertError> {
         let (id, validator) = match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(&id))
         {
             Ok(idx) => ATTRIBUTE_VALIDATORS[idx],
