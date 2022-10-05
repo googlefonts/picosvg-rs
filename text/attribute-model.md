@@ -42,7 +42,7 @@ as keys for insertion and retrieval.
 The `AttributeMap` type provides two sets of methods:
 
 - `insert`/`get`: These are checked at compile time and work with the empty structs from
-the `attribute::id` module as keys concrete value types as values.
+the `attribute::id` module as keys and concrete value types as values.
 
 - `insert_by_id`/`get_by_id`: These are checked at runtime and work with raw string attribute
 ids as keys and the `Value` enum as values.

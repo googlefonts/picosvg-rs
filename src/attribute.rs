@@ -36,11 +36,11 @@ pub trait AttributeDescriptor {
 }
 
 macro_rules! attr_desc {
-    ($name:ident, $key:expr, $ty:ty) => {
+    ($name:ident, $id:expr, $ty:ty) => {
         #[derive(Copy, Clone, Debug)]
         pub struct $name;
         impl AttributeDescriptor for $name {
-            const ID: &'static str = $key;
+            const ID: &'static str = $id;
             type Value = $ty;
         }
     };
@@ -91,8 +91,12 @@ impl AttributeMap {
         Self::default()
     }
 
-    pub fn insert<A: AttributeDescriptor>(&mut self, attr: A, value: A::Value) -> Option<Value> {
-        self.items.insert(attr.id(), value.into_value())
+    pub fn insert<A: AttributeDescriptor>(
+        &mut self,
+        attr: A,
+        value: impl Into<A::Value>,
+    ) -> Option<Value> {
+        self.items.insert(attr.id(), value.into().into_value())
     }
 
     pub fn get<A: AttributeDescriptor>(&self, attr: A) -> Option<&A::Value> {
