@@ -107,7 +107,7 @@ impl AttributeMap {
     }
 
     pub fn insert_by_id(&mut self, id: &str, value: Value) -> Result<Option<Value>, InsertError> {
-        let (id, validator) = match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(&id))
+        let (id, validator) = match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(id))
         {
             Ok(idx) => ATTRIBUTE_VALIDATORS[idx],
             _ => return Err(InsertError::InvalidAttribute),
