@@ -545,6 +545,6 @@ pub mod id {
     attr_desc!(ZoomAndPan, "zoomAndPan", super::String);
 }
 
-value_desc!(Length);
 value_desc!(Color);
+value_desc!(Length);
 value_desc!(String);

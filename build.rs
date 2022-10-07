@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 use std::fmt::Write;
 use std::fs;
 use std::path::Path;
@@ -301,7 +301,7 @@ fn main() -> Result<(), std::fmt::Error> {
     let mut attrs = Vec::from(ATTRIBUTES);
     attrs.sort_by(|a, b| a.1.cmp(&b.1));
 
-    let mut value_tys = HashSet::new();
+    let mut value_tys = BTreeSet::new();
 
     let mut buf = String::default();
 
