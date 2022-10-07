@@ -102,8 +102,7 @@ impl AttributeMap {
     pub fn get<A: AttributeDescriptor>(&self, attr: A) -> Option<&A::Value> {
         self.items
             .get(attr.id())
-            .map(|value| A::Value::try_deref_value(value))
-            .flatten()
+            .and_then(A::Value::try_deref_value)
     }
 
     pub fn insert_by_id(&mut self, id: &str, value: Value) -> Result<Option<Value>, InsertError> {
