@@ -299,7 +299,7 @@ fn main() -> Result<(), std::fmt::Error> {
     let dest_path = Path::new("generated/attribute.rs");
 
     let mut attrs = Vec::from(ATTRIBUTES);
-    attrs.sort_by(|a, b| a.1.cmp(&b.1));
+    attrs.sort_by(|a, b| a.1.cmp(b.1));
 
     let mut value_tys = BTreeSet::new();
 

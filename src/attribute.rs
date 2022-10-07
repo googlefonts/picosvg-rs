@@ -102,12 +102,11 @@ impl AttributeMap {
     pub fn get<A: AttributeDescriptor>(&self, attr: A) -> Option<&A::Value> {
         self.items
             .get(attr.id())
-            .map(|value| A::Value::try_deref_value(value))
-            .flatten()
+            .and_then(A::Value::try_deref_value)
     }
 
     pub fn insert_by_id(&mut self, id: &str, value: Value) -> Result<Option<Value>, InsertError> {
-        let (id, validator) = match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(&id))
+        let (id, validator) = match ATTRIBUTE_VALIDATORS.binary_search_by(|probe| probe.0.cmp(id))
         {
             Ok(idx) => ATTRIBUTE_VALIDATORS[idx],
             _ => return Err(InsertError::InvalidAttribute),
